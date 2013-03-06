@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>_WinHttpBinaryConcat</title>        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="../CSS/Default1.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+
+<!--Description Section-->
+        <h1 class="small">Function Reference</h1>
+        <h1>_WinHttpBinaryConcat</h1>
+        <hr style="height:0px">
+        <p>Concatenates two binary data returned by _WinHttpReadData() in binary mode.<br></p>
+
+<!--Syntax Section-->
+        <h2>Syntax</h2>
+        <p>        <p class="codeheader">
+        #include "WinHttp.au3"<br>
+        _WinHttpBinaryConcat(ByRef $bBinary1, ByRef $bBinary2)<br>
+        </p>
+
+<!--Parameters Section-->
+        <h2>Parameters</h2>
+        <table class="paramstable" summary="function parameters">
+            <tr>
+                <td class="leftpane">$bBinary1</td>
+                <td class="rightpane">Binary data that is to be concatenated.</td>
+            </tr>
+            <tr>
+                <td class="leftpane">$bBinary2</td>
+                <td class="rightpane">Binary data to concatenate.</td>
+            </tr>
+        </table>
+
+<!--Return Value Section-->
+        <h2>Return Value</h2>
+        <p>Success - Returns concatenated binary data.<br>
+        Failure - Returns empty binary and sets @error:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 - Invalid input.</p>
+
+<!--Remarks Section-->
+<!--Related Section-->
+        <h2>Related</h2><a href="_WinHttpReadData.htm">_WinHttpReadData</a>
+        <br>
+
+<!--Link Section-->
+<!--Example Section-->
+        <h2>Example</h2>
+        <script type="text/javascript">
+            if (clipboardData && clipboardData.setData) document.write('<a class="button" onmouseover="this.style.color=&quot;#fff&quot;;this.style.background=&quot;#999&quot;; "onmouseout="this.style.color=&quot;#444&quot;;this.style.background=&quot;#E9E9E9&quot;; ToolTip.style.visibility=&quot;hidden&quot;"onclick="clipboardData.setData(&quot;Text&quot;, au3code.innerText);          ToolTip.innerHTML=&quot;<table><tr><td class=tooltip>Copied!&lt;/td>&lt;/tr>&lt;/table>&quot;;          ToolTip.style.pixelLeft=(event.x+20+document.body.scrollLeft);          ToolTip.style.pixelTop=(event.y+15+document.body.scrollTop);          ToolTip.style.visibility=&quot;visible&quot;;          setTimeout(&#39;ToolTip.style.visibility=&quot;hidden&quot;&#39;, 1200);">Copy to clipboard<\/a>');
+        </script>
+        <div id="ToolTip" class="tip"></div>
+<p class="codebox" id="au3code"> 
+
+
+<span class="S11">#include<span class="S7">&nbsp;"WinHttp.au3"</span></span><br><br>
+<span class="S4">Opt</span><span class="S8">(</span><span class="S7">"MustDeclareVars"</span><span class="S8">,</span><span class="S3">&nbsp;1</span><span class="S8">)</span><br><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$sHost</span><span class="S8">&nbsp;=</span><span class="S7">&nbsp;"www.smijesne-slike.net"</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$sTarget</span><span class="S8">&nbsp;=</span><span class="S7">&nbsp;"wp-content/uploads/2009/09/7.jpg"</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$sDestination</span><span class="S8">&nbsp;=</span><span class="S6">&nbsp;@ScriptDir</span><span class="S8">&nbsp;&amp;</span><span class="S7">&nbsp;"\CatHot.jpg"</span><br><br>
+<span class="S2">; Initialize and get session handle</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$hHttpOpen</span><span class="S8">&nbsp;=</span><span class="S15">&nbsp;_WinHttpOpen</span><span class="S8">()</span><br>
+<span class="S5">If</span><span class="S6">&nbsp;@error</span><span class="S5">&nbsp;Then</span><br>
+<span class="S4">&nbsp;&nbsp;&nbsp;&nbsp;MsgBox</span><span class="S8">(</span><span class="S3">48</span><span class="S8">,</span><span class="S7">&nbsp;"Error"</span><span class="S8">,</span><span class="S7">&nbsp;"Error initializing the usage of WinHTTP functions."</span><span class="S8">)</span><br>
+<span class="S5">&nbsp;&nbsp;&nbsp;&nbsp;Exit</span><span class="S3">&nbsp;1</span><br>
+<span class="S5">EndIf</span><br>
+<span class="S2">; Get connection handle</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$hHttpConnect</span><span class="S8">&nbsp;=</span><span class="S15">&nbsp;_WinHttpConnect</span><span class="S8">(</span><span class="S9">$hHttpOpen</span><span class="S8">,</span><span class="S9">&nbsp;$sHost</span><span class="S8">)</span><br>
+<span class="S5">If</span><span class="S6">&nbsp;@error</span><span class="S5">&nbsp;Then</span><br>
+<span class="S4">&nbsp;&nbsp;&nbsp;&nbsp;MsgBox</span><span class="S8">(</span><span class="S3">48</span><span class="S8">,</span><span class="S7">&nbsp;"Error"</span><span class="S8">,</span><span class="S7">&nbsp;"Error specifying the initial target server of an HTTP request."</span><span class="S8">)</span><br>
+<span class="S15">&nbsp;&nbsp;&nbsp;&nbsp;_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hHttpOpen</span><span class="S8">)</span><br>
+<span class="S5">&nbsp;&nbsp;&nbsp;&nbsp;Exit</span><span class="S3">&nbsp;2</span><br>
+<span class="S5">EndIf</span><br>
+<span class="S2">; Specify the reguest</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$hHttpRequest</span><span class="S8">&nbsp;=</span><span class="S15">&nbsp;_WinHttpOpenRequest</span><span class="S8">(</span><span class="S9">$hHttpConnect</span><span class="S8">,</span><span class="S5">&nbsp;Default</span><span class="S8">,</span><span class="S9">&nbsp;$sTarget</span><span class="S8">)</span><br>
+<span class="S5">If</span><span class="S6">&nbsp;@error</span><span class="S5">&nbsp;Then</span><br>
+<span class="S4">&nbsp;&nbsp;&nbsp;&nbsp;MsgBox</span><span class="S8">(</span><span class="S3">48</span><span class="S8">,</span><span class="S7">&nbsp;"Error"</span><span class="S8">,</span><span class="S7">&nbsp;"Error creating an HTTP request handle."</span><span class="S8">)</span><br>
+<span class="S15">&nbsp;&nbsp;&nbsp;&nbsp;_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hHttpConnect</span><span class="S8">)</span><br>
+<span class="S15">&nbsp;&nbsp;&nbsp;&nbsp;_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hHttpOpen</span><span class="S8">)</span><br>
+<span class="S5">&nbsp;&nbsp;&nbsp;&nbsp;Exit</span><span class="S3">&nbsp;3</span><br>
+<span class="S5">EndIf</span><br>
+<span class="S2">; Send request</span><br>
+<span class="S15">_WinHttpSendRequest</span><span class="S8">(</span><span class="S9">$hHttpRequest</span><span class="S8">)</span><br>
+<span class="S5">If</span><span class="S6">&nbsp;@error</span><span class="S5">&nbsp;Then</span><br>
+<span class="S4">&nbsp;&nbsp;&nbsp;&nbsp;MsgBox</span><span class="S8">(</span><span class="S3">48</span><span class="S8">,</span><span class="S7">&nbsp;"Error"</span><span class="S8">,</span><span class="S7">&nbsp;"Error sending specified request."</span><span class="S8">)</span><br>
+<span class="S15">&nbsp;&nbsp;&nbsp;&nbsp;_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hHttpConnect</span><span class="S8">)</span><br>
+<span class="S15">&nbsp;&nbsp;&nbsp;&nbsp;_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hHttpOpen</span><span class="S8">)</span><br>
+<span class="S5">&nbsp;&nbsp;&nbsp;&nbsp;Exit</span><span class="S3">&nbsp;4</span><br>
+<span class="S5">EndIf</span><br><br>
+<span class="S2">; Wait for the response</span><br>
+<span class="S15">_WinHttpReceiveResponse</span><span class="S8">(</span><span class="S9">$hHttpRequest</span><span class="S8">)</span><br>
+<span class="S2">; Read if available</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$bChunk</span><span class="S8">,</span><span class="S9">&nbsp;$bData</span><span class="S8">,</span><span class="S9">&nbsp;$hFile</span><br>
+<span class="S5">If</span><span class="S15">&nbsp;_WinHttpQueryDataAvailable</span><span class="S8">(</span><span class="S9">$hHttpRequest</span><span class="S8">)</span><span class="S5">&nbsp;Then</span><br>
+<span class="S5">&nbsp;&nbsp;&nbsp;&nbsp;While</span><span class="S3">&nbsp;1</span><br>
+<span class="S9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$bChunk</span><span class="S8">&nbsp;=</span><span class="S15">&nbsp;_WinHttpReadData</span><span class="S8">(</span><span class="S9">$hHttpRequest</span><span class="S8">,</span><span class="S3">&nbsp;2</span><span class="S8">)</span><span class="S2">&nbsp;; read binary</span><br>
+<span class="S5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If</span><span class="S6">&nbsp;@error</span><span class="S5">&nbsp;Then ExitLoop</span><br>
+<span class="S9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$bData</span><span class="S8">&nbsp;=</span><span class="S15">&nbsp;_WinHttpBinaryConcat</span><span class="S8">(</span><span class="S9">$bData</span><span class="S8">,</span><span class="S9">&nbsp;$bChunk</span><span class="S8">)</span><span class="S2">&nbsp;; concat two binary data</span><br>
+<span class="S5">&nbsp;&nbsp;&nbsp;&nbsp;WEnd</span><br>
+<span class="S2">&nbsp;&nbsp;&nbsp;&nbsp;; Save it to the file</span><br>
+<span class="S9">&nbsp;&nbsp;&nbsp;&nbsp;$hFile</span><span class="S8">&nbsp;=</span><span class="S4">&nbsp;FileOpen</span><span class="S8">(</span><span class="S9">$sDestination</span><span class="S8">,</span><span class="S3">&nbsp;26</span><span class="S8">)</span><br>
+<span class="S4">&nbsp;&nbsp;&nbsp;&nbsp;FileWrite</span><span class="S8">(</span><span class="S9">$hFile</span><span class="S8">,</span><span class="S9">&nbsp;$bData</span><span class="S8">)</span><br>
+<span class="S4">&nbsp;&nbsp;&nbsp;&nbsp;FileClose</span><span class="S8">(</span><span class="S9">$hFile</span><span class="S8">)</span><br>
+<span class="S5">Else</span><br>
+<span class="S4">&nbsp;&nbsp;&nbsp;&nbsp;MsgBox</span><span class="S8">(</span><span class="S3">48</span><span class="S8">,</span><span class="S7">&nbsp;"Error occurred"</span><span class="S8">,</span><span class="S7">&nbsp;"No data available. "</span><span class="S8">&nbsp;&amp;</span><span class="S6">&nbsp;@CRLF</span><span class="S8">)</span><br>
+<span class="S5">EndIf</span><br><br>
+<span class="S2">; Close handles</span><br>
+<span class="S15">_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hHttpRequest</span><span class="S8">)</span><br>
+<span class="S15">_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hHttpConnect</span><span class="S8">)</span><br>
+<span class="S15">_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hHttpOpen</span><span class="S8">)</span><br><br>
+<span class="S2">; See what's downloaded</span><br>
+<span class="S4">ShellExecute</span><span class="S8">(</span><span class="S9">$sDestination</span><span class="S8">)</span><br><br>
+</p>
+        <br>
+        <p>&nbsp;</p>
+
+<!--Footer Section-->
+<hr style="height:0px">
+        <p>WinHttp</p>
+    </body>
+</html>

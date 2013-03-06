@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>_WinHttpSendRequest</title>        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="../CSS/Default1.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+
+<!--Description Section-->
+        <h1 class="small">Function Reference</h1>
+        <h1>_WinHttpSendRequest</h1>
+        <hr style="height:0px">
+        <p>Sends the specified request to the HTTP server.<br></p>
+
+<!--Syntax Section-->
+        <h2>Syntax</h2>
+        <p>        <p class="codeheader">
+        #include "WinHttp.au3"<br>
+        _WinHttpSendRequest($hRequest [, $sHeaders = Default [, $sOptional = Default [, $iTotalLength = Default [, $iContext = Default ]]]])<br>
+        </p>
+
+<!--Parameters Section-->
+        <h2>Parameters</h2>
+        <table class="paramstable" summary="function parameters">
+            <tr>
+                <td class="leftpane">$hRequest</td>
+                <td class="rightpane">Handle returned by _WinHttpOpenRequest().</td>
+            </tr>
+            <tr>
+                <td class="leftpane">$sHeaders</td>
+                <td class="rightpane"><b>[optional]</b> Additional headers to append to the request. Default is $WINHTTP_NO_ADDITIONAL_HEADERS.</td>
+            </tr>
+            <tr>
+                <td class="leftpane">$sOptional</td>
+                <td class="rightpane"><b>[optional]</b> Optional data to send immediately after the request headers. Default is $WINHTTP_NO_REQUEST_DATA.</td>
+            </tr>
+            <tr>
+                <td class="leftpane">$iTotalLength</td>
+                <td class="rightpane"><b>[optional]</b> Length, in bytes, of the total optional data sent. Default is 0.</td>
+            </tr>
+            <tr>
+                <td class="leftpane">$iContext</td>
+                <td class="rightpane"><b>[optional]</b> Application-defined value that is passed, with the request handle, to any callback functions. Default is 0.</td>
+            </tr>
+        </table>
+
+<!--Return Value Section-->
+        <h2>Return Value</h2>
+        <p>Success - Returns 1.<br>
+        Failure - Returns 0 and sets @error:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 - DllCall failed</p>
+
+<!--Remarks Section-->
+        <h2>Remarks</h2>
+        <p>Specifying optional data ($sOptional) will cause $iTotalLength to receive the size of that data if left default value.</p>
+        <br>
+
+<!--Related Section-->
+        <h2>Related</h2><a href="_WinHttpOpenRequest.htm">_WinHttpOpenRequest</a>
+        <br>
+
+<!--Link Section-->
+        <h2>See Also</h2>
+        <a title="External link" href="http://msdn.microsoft.com/en-us/library/aa384110(VS.85).aspx">MSDN</a>
+
+        <br>
+
+<!--Example Section-->
+        <h2>Example</h2>
+        <script type="text/javascript">
+            if (clipboardData && clipboardData.setData) document.write('<a class="button" onmouseover="this.style.color=&quot;#fff&quot;;this.style.background=&quot;#999&quot;; "onmouseout="this.style.color=&quot;#444&quot;;this.style.background=&quot;#E9E9E9&quot;; ToolTip.style.visibility=&quot;hidden&quot;"onclick="clipboardData.setData(&quot;Text&quot;, au3code.innerText);          ToolTip.innerHTML=&quot;<table><tr><td class=tooltip>Copied!&lt;/td>&lt;/tr>&lt;/table>&quot;;          ToolTip.style.pixelLeft=(event.x+20+document.body.scrollLeft);          ToolTip.style.pixelTop=(event.y+15+document.body.scrollTop);          ToolTip.style.visibility=&quot;visible&quot;;          setTimeout(&#39;ToolTip.style.visibility=&quot;hidden&quot;&#39;, 1200);">Copy to clipboard<\/a>');
+        </script>
+        <div id="ToolTip" class="tip"></div>
+<p class="codebox" id="au3code"> 
+
+
+<span class="S11">#include<span class="S7">&nbsp;"WinHttp.au3"</span></span><br><br>
+<span class="S4">Opt</span><span class="S8">(</span><span class="S7">"MustDeclareVars"</span><span class="S8">,</span><span class="S3">&nbsp;1</span><span class="S8">)</span><br><br>
+<span class="S2">; !!!Note that this example will fail because of invalid username and password!!!</span><br><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$sUserName</span><span class="S8">&nbsp;=</span><span class="S7">&nbsp;"SomeUserName"</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$sPassword</span><span class="S8">&nbsp;=</span><span class="S7">&nbsp;"SomePassword"</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$sDomain</span><span class="S8">&nbsp;=</span><span class="S7">&nbsp;"www.google.com"</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$sPage</span><span class="S8">&nbsp;=</span><span class="S7">&nbsp;"accounts/ClientLogin"</span><br>
+<span class="S2">; Visit http://code.google.com/apis/accounts/docs/AuthForInstalledApps.html for more informations</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$sAdditionalData</span><span class="S8">&nbsp;=</span><span class="S7">&nbsp;"accountType=HOSTED_OR_GOOGLE&Email="</span><span class="S8">&nbsp;&amp;</span><span class="S9">&nbsp;$sUserName</span><span class="S8">&nbsp;&amp;</span><span class="S7">&nbsp;"&Passwd="</span><span class="S8">&nbsp;&amp;</span><span class="S9">&nbsp;$sPassword</span><span class="S8">&nbsp;&amp;</span><span class="S7">&nbsp;"&service=mail&source=Gulp-CalGulp-1.05"</span><br><br>
+<span class="S2">; Initialize and get session handle</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$hOpen</span><span class="S8">&nbsp;=</span><span class="S15">&nbsp;_WinHttpOpen</span><span class="S8">(</span><span class="S7">"Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6"</span><span class="S8">)</span><br><br>
+<span class="S2">; Get connection handle</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$hConnect</span><span class="S8">&nbsp;=</span><span class="S15">&nbsp;_WinHttpConnect</span><span class="S8">(</span><span class="S9">$hOpen</span><span class="S8">,</span><span class="S9">&nbsp;$sDomain</span><span class="S8">)</span><br><br>
+<span class="S2">; Make a request</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$hRequest</span><span class="S8">&nbsp;=</span><span class="S15">&nbsp;_WinHttpOpenRequest</span><span class="S8">(</span><span class="S9">$hConnect</span><span class="S8">,</span><span class="S7">&nbsp;"POST"</span><span class="S8">,</span><span class="S9">&nbsp;$sPage</span><span class="S8">, -</span><span class="S3">1</span><span class="S8">, -</span><span class="S3">1</span><span class="S8">, -</span><span class="S3">1</span><span class="S8">,</span><span class="S9">&nbsp;$WINHTTP_FLAG_SECURE</span><span class="S8">)</span><br><br>
+<span class="S2">; Send it. Specify additional data to send too. This is required by the Google API:</span><br>
+<span class="S15">_WinHttpSendRequest</span><span class="S8">(</span><span class="S9">$hRequest</span><span class="S8">,</span><span class="S7">&nbsp;"Content-Type: application/x-www-form-urlencoded"</span><span class="S8">,</span><span class="S9">&nbsp;$sAdditionalData</span><span class="S8">)</span><br><br>
+<span class="S2">; Wait for the response</span><br>
+<span class="S15">_WinHttpReceiveResponse</span><span class="S8">(</span><span class="S9">$hRequest</span><span class="S8">)</span><br><br>
+<span class="S2">; See what's returned</span><br>
+<span class="S5">Global</span><span class="S9">&nbsp;$sReturned</span><br>
+<span class="S5">If</span><span class="S15">&nbsp;_WinHttpQueryDataAvailable</span><span class="S8">(</span><span class="S9">$hRequest</span><span class="S8">)</span><span class="S5">&nbsp;Then</span><span class="S2">&nbsp;; if there is data</span><br>
+<span class="S5">&nbsp;&nbsp;&nbsp;&nbsp;Do</span><br>
+<span class="S9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$sReturned</span><span class="S8">&nbsp;&=</span><span class="S15">&nbsp;_WinHttpReadData</span><span class="S8">(</span><span class="S9">$hRequest</span><span class="S8">)</span><br>
+<span class="S5">&nbsp;&nbsp;&nbsp;&nbsp;Until</span><span class="S6">&nbsp;@error</span><br>
+<span class="S5">EndIf</span><br><br>
+<span class="S2">; Close handles</span><br>
+<span class="S15">_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hRequest</span><span class="S8">)</span><br>
+<span class="S15">_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hConnect</span><span class="S8">)</span><br>
+<span class="S15">_WinHttpCloseHandle</span><span class="S8">(</span><span class="S9">$hOpen</span><span class="S8">)</span><br><br>
+<span class="S2">; See what's returned</span><br>
+<span class="S4">MsgBox</span><span class="S8">(</span><span class="S3">0</span><span class="S8">,</span><span class="S7">&nbsp;"Returned"</span><span class="S8">,</span><span class="S9">&nbsp;$sReturned</span><span class="S8">)</span><br><br>
+</p>
+        <br>
+        <p>&nbsp;</p>
+
+<!--Footer Section-->
+<hr style="height:0px">
+        <p>WinHttp</p>
+    </body>
+</html>
